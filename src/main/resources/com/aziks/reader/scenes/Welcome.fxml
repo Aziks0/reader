@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity"
+            maxWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2">
+    <top>
+        <fx:include source="../components/Header.fxml"/>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="150.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="60.0"/>
+            </padding>
+            <Label alignment="CENTER" contentDisplay="CENTER"
+                   text="%welcome.welcomeMessage">
+                <font>
+                    <Font name="System Bold" size="46.0"/>
+                </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="101.0" prefWidth="974.0"
+                  spacing="80.0">
+                <Button mnemonicParsing="false" prefHeight="100.0"
+                        prefWidth="250.0" text="%welcome.createLibrary">
+                    <font>
+                        <Font name="System Bold" size="20.0"/>
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" prefHeight="100.0"
+                        prefWidth="250.0" text="%welcome.openLibrary">
+                    <font>
+                        <Font name="System Bold" size="20.0"/>
+                    </font>
+                </Button>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
