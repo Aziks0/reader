@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1"
-      xmlns="http://javafx.com/javafx/11.0.2">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="javafx.scene.layout.VBox"
+         xmlns="http://javafx.com/javafx/11.0.2">
     <children>
         <MenuBar>
             <menus>
@@ -25,4 +25,4 @@
             </menus>
         </MenuBar>
     </children>
-</VBox>
+</fx:root>
