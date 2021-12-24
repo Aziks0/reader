@@ -11,7 +11,11 @@ import java.util.ResourceBundle;
 
 public class Main extends Application {
 
+  private static Settings settings;
+
   public static void main(String[] args) {
+    settings = new Settings();
+    settings.init();
     launch();
   }
 
