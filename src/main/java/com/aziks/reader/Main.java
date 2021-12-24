@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
@@ -21,8 +20,10 @@ public class Main extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    Locale locale = new Locale("fr", "FR");
-    ResourceBundle bundle = ResourceBundle.getBundle("com.aziks.reader" + ".Locales", locale);
+    // Get translations
+    String language = settings.getLanguage();
+    I18n i18n = new I18n(language);
+    ResourceBundle bundle = i18n.getBundle();
 
     FXMLLoader fxmlLoader =
         new FXMLLoader(
