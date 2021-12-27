@@ -1,30 +1,30 @@
 package com.aziks.reader;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
 public class Settings {
-  private final String[] availableLanguages = {"EN", "FR"};
-  private final Preferences userPreferences;
-
-  public Settings() {
-    this.userPreferences = Preferences.userNodeForPackage(getClass());
-  }
+  private static final String[] availableLanguages = {"EN", "FR"};
+  private static final Preferences userPreferences = Preferences.userNodeForPackage(Settings.class);
+  private static Path homeReader;
 
   /** Set default settings for every setting not set */
-  public void init() {
-    // Set default language if settings does not exist
-    if (this.userPreferences.get("language", null) == null) {
+  public static void init() {
+    // Set default language if setting does not exist
+    if (userPreferences.get("language", null) == null) {
       // Use user language if translations are available for it
       String locale = Locale.getDefault().toString();
-      for (String language : this.availableLanguages) {
+      for (String language : availableLanguages) {
         if (locale.contains(language)) {
-          this.userPreferences.put("language", language);
+          userPreferences.put("language", language);
           break;
         }
       }
       // Else, use english as default
-      if (this.getLanguage() == null) this.userPreferences.put("language", "EN");
+      if (getLanguage() == null) userPreferences.put("language", "EN");
     }
   }
 
@@ -33,8 +33,12 @@ public class Settings {
    *
    * @return The user language
    */
-  public String getLanguage() {
-    return this.userPreferences.get("language", null);
+  public static String getLanguage() {
+    return userPreferences.get("language", "EN");
+  }
+
+  public static void setLanguage(String language) {
+    userPreferences.put("language", language);
   }
 
   /**
@@ -42,7 +46,11 @@ public class Settings {
    *
    * @return A path to a library or null
    */
-  public String getOpenedLibraryPath() {
-    return this.userPreferences.get("lastLibraryPath", null);
+  public static String getOpenedLibraryPath() {
+    return userPreferences.get("lastLibraryPath", null);
+  }
+
+  public static void setOpenedLibraryPath(String path) {
+    userPreferences.put("lastLibraryPath", path);
   }
 }
