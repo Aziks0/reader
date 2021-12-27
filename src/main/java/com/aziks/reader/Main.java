@@ -2,6 +2,7 @@ package com.aziks.reader;
 
 import com.aziks.reader.utils.ExceptionHandler;
 import com.aziks.reader.utils.HttpRequestUnsuccessful;
+import com.aziks.reader.utils.LineNotFoundException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,21 +19,25 @@ public class Main extends Application {
     Settings.init();
     I18n.init(Settings.getLanguage());
 
-    // Store the GUTINDEX.ALL file
-    if (Settings.getIsFirstRun()) {
-      GutScraper scraper = new GutScraper();
-      try {
+    // Store the GUTINDEX.ALL file on first run or if an update is available
+    GutScraper scraper = new GutScraper();
+    try {
+      if (Settings.getIsFirstRun()
+          || (Settings.getUpdateOnStartup() && scraper.isUpdateAvailable())) {
         scraper.storeGutenbergIndex();
-      } catch (IOException e) {
-        e.printStackTrace();
-        ExceptionHandler.alertUser(I18n.getMessage("exception.IOException"));
-      } catch (HttpRequestUnsuccessful e) {
-        e.printStackTrace();
-        ExceptionHandler.alertUser(I18n.getMessage("exception.httpRequestUnsuccessful"));
       }
-
-      Settings.setIsFirstRun(false);
+    } catch (IOException e) {
+      e.printStackTrace();
+      ExceptionHandler.alertUser(I18n.getMessage("exception.IOException"));
+    } catch (HttpRequestUnsuccessful e) {
+      e.printStackTrace();
+      ExceptionHandler.alertUser(I18n.getMessage("exception.httpRequestUnsuccessful"));
+    } catch (LineNotFoundException e) {
+      e.printStackTrace();
+      ExceptionHandler.alertUser(I18n.getMessage("exception.lineNotFoundException"));
     }
+
+    Settings.setIsFirstRun(false);
 
     launch();
   }
