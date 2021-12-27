@@ -10,13 +10,7 @@ import javafx.stage.Stage;
 import java.io.File;
 
 abstract class Controller {
-  protected static final Settings settings;
-  protected static final I18n i18n;
 
-  static {
-    settings = new Settings();
-    String language = settings.getLanguage();
-    i18n = new I18n(language);
   }
 
   /**
