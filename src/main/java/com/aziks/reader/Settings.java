@@ -53,4 +53,32 @@ public class Settings {
   public static void setOpenedLibraryPath(String path) {
     userPreferences.put("lastLibraryPath", path);
   }
+
+  public static boolean getKeepWindowSize() {
+    return userPreferences.getBoolean("keepWindowSize", false);
+  }
+
+  public static double getWindowWidth() {
+    return userPreferences.getDouble("windowWidth", 1000);
+  }
+
+  public static void setWindowWidth(double width) {
+    userPreferences.putDouble("windowWidth", width);
+  }
+
+  public static double getWindowHeight() {
+    return userPreferences.getDouble("windowHeight", 800);
+  }
+
+  public static void setWindowHeight(double height) {
+    userPreferences.putDouble("windowHeight", height);
+  }
+
+  public static boolean getWindowMaximized() {
+    return userPreferences.getBoolean("windowMaximized", false);
+  }
+
+  public static void setWindowMaximized(boolean fullscreen) {
+    userPreferences.putBoolean("windowMaximized", fullscreen);
+  }
 }
