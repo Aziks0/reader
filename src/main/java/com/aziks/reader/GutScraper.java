@@ -74,7 +74,7 @@ public class GutScraper {
 
   public boolean isUpdateAvailable()
       throws IOException, LineNotFoundException, HttpRequestUnsuccessful {
-    String localDate = getUpstreamLastUpdateDate();
+    String localDate = getLocalLastUpdateDate();
     String upstreamDate = getUpstreamLastUpdateDate();
     return !localDate.equals(upstreamDate);
   }
