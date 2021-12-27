@@ -8,7 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
@@ -48,14 +50,16 @@ public class Main extends Application {
     // Get translations
     ResourceBundle bundle = I18n.getBundle();
 
+    String openedLibraryPath = Settings.getOpenedLibraryPath();
     FXMLLoader fxmlLoader;
-    if (Settings.getOpenedLibraryPath() == null) {
+    if (openedLibraryPath != null && Library.isLibrary(new File(openedLibraryPath))) {
+      library.setPath(Path.of(openedLibraryPath));
+      fxmlLoader =
+          new FXMLLoader(getClass().getResource("/com/aziks/reader" + "/scenes/Root.fxml"), bundle);
+    } else {
       fxmlLoader =
           new FXMLLoader(
               getClass().getResource("/com/aziks/reader" + "/scenes/Welcome.fxml"), bundle);
-    } else {
-      fxmlLoader =
-          new FXMLLoader(getClass().getResource("/com/aziks/reader" + "/scenes/Root.fxml"), bundle);
     }
 
     Scene scene = new Scene(fxmlLoader.load());
@@ -77,6 +81,13 @@ public class Main extends Application {
       Settings.setWindowWidth(app.getWidth());
       Settings.setWindowHeight(app.getHeight());
       Settings.setWindowMaximized(app.isMaximized());
+    }
+
+    Path libraryPath = library.getPath();
+    if (libraryPath == null) {
+      Settings.setOpenedLibraryPath(null);
+    } else {
+      Settings.setOpenedLibraryPath(libraryPath.toString());
     }
   }
 }

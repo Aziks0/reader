@@ -85,11 +85,13 @@ public class Settings {
    * @return A path to a library or null
    */
   public static String getOpenedLibraryPath() {
-    return userPreferences.get("lastLibraryPath", null);
+    String path = userPreferences.get("lastLibraryPath", "");
+    if (path.isBlank()) return null;
+    return path;
   }
 
   public static void setOpenedLibraryPath(String path) {
-    userPreferences.put("lastLibraryPath", path);
+    userPreferences.put("lastLibraryPath", path != null ? path : "");
   }
 
   public static boolean getKeepWindowSize() {
