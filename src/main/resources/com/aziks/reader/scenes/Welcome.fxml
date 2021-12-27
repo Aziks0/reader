@@ -10,7 +10,8 @@
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity"
             maxWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2">
+            prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2"
+            fx:controller="com.aziks.reader.controllers.WelcomeController">
     <top>
         <Header/>
     </top>
@@ -28,13 +29,15 @@
             <HBox alignment="CENTER" prefHeight="101.0" prefWidth="974.0"
                   spacing="80.0">
                 <Button mnemonicParsing="false" prefHeight="100.0"
-                        prefWidth="250.0" text="%welcome.createLibrary">
+                        prefWidth="250.0" text="%welcome.createLibrary"
+                        onAction="#handleCreateLibraryButtonAction">
                     <font>
                         <Font name="System Bold" size="20.0"/>
                     </font>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="100.0"
-                        prefWidth="250.0" text="%welcome.openLibrary">
+                        prefWidth="250.0" text="%welcome.openLibrary"
+                        onAction="#handleOpenLibraryButtonAction">
                     <font>
                         <Font name="System Bold" size="20.0"/>
                     </font>

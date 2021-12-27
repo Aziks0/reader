@@ -1,6 +1,10 @@
 package com.aziks.reader;
 
+import com.aziks.reader.utils.DirectoryNotCreatedException;
+
 import java.io.File;
+import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +25,28 @@ public class Library {
 
     List<String> files = Arrays.asList(_files);
     return files.contains(database.getDatabaseFileName()) && files.contains(booksDirectoryName);
+  }
+
+  /**
+   * TODO write doc
+   *
+   * @param path The path to the library directory
+   * @throws DirectoryNotCreatedException
+   * @throws SQLException
+   */
+  public void createLibrary(Path path) throws DirectoryNotCreatedException, SQLException {
+    // Create books directory
+    File booksFile = path.resolve(booksDirectoryName).toFile();
+    if (!booksFile.mkdir()) throw new DirectoryNotCreatedException();
+
+    // Create library database
+    String sqlInit =
+        "CREATE TABLE IF NOT EXISTS books ("
+            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "title VARCHAR(255) NOT NULL"
+            + ")";
+    database.connectToDatabase(path);
+    database.executeUpdate(sqlInit);
   }
 
   public Path getPath() {
