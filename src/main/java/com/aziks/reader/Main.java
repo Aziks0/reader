@@ -1,5 +1,7 @@
 package com.aziks.reader;
 
+import com.aziks.reader.utils.ExceptionHandler;
+import com.aziks.reader.utils.HttpRequestUnsuccessful;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +17,22 @@ public class Main extends Application {
   public static void main(String[] args) {
     Settings.init();
     I18n.init(Settings.getLanguage());
+
+    // Store the GUTINDEX.ALL file
+    if (Settings.getIsFirstRun()) {
+      GutScraper scraper = new GutScraper();
+      try {
+        scraper.storeGutenbergIndex();
+      } catch (IOException e) {
+        e.printStackTrace();
+        ExceptionHandler.alertUser(I18n.getMessage("exception.IOException"));
+      } catch (HttpRequestUnsuccessful e) {
+        e.printStackTrace();
+        ExceptionHandler.alertUser(I18n.getMessage("exception.httpRequestUnsuccessful"));
+      }
+
+      Settings.setIsFirstRun(false);
+    }
 
     launch();
   }

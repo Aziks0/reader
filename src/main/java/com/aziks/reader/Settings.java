@@ -9,11 +9,10 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
-// TODO: put settings in hashmap/map on init
 public class Settings {
   private static final String[] availableLanguages = {"EN", "FR"};
   private static final Preferences userPreferences = Preferences.userNodeForPackage(Settings.class);
-  private static Path homeReader;
+  private static Path readerPath;
 
   /** Set default settings for every setting not set */
   public static void init() {
@@ -31,16 +30,40 @@ public class Settings {
       if (getLanguage() == null) userPreferences.put("language", "EN");
     }
 
-    homeReader = Paths.get(System.getProperty("user.home"), ".reader");
-    if (Files.notExists(homeReader)) {
+    // Set path to reader data directory (default is *user.home*/.reader/
+    String readerPathString = userPreferences.get("readerPath", null);
+    if (readerPathString == null) {
+      readerPath = Paths.get(System.getProperty("user.home"), ".reader");
+      userPreferences.put("readerPath", readerPath.toString());
+    } else {
+      readerPath = Paths.get(readerPathString);
+    }
+
+    if (Files.notExists(readerPath)) {
       try {
-        if (!homeReader.toFile().mkdir()) throw new DirectoryNotCreatedException();
+        if (!readerPath.toFile().mkdir()) throw new DirectoryNotCreatedException();
       } catch (DirectoryNotCreatedException e) {
         e.printStackTrace();
         ExceptionHandler.alertUser(I18n.getMessage("exception.directoryNotCreated"));
         System.exit(1);
       }
     }
+  }
+
+  public static boolean getIsFirstRun() {
+    return userPreferences.getBoolean("isFirstRun", true);
+  }
+
+  public static void setIsFirstRun(boolean isFirstRun) {
+    userPreferences.putBoolean("isFirstRun", isFirstRun);
+  }
+
+  public static Path getReaderPath() {
+    return readerPath;
+  }
+
+  public static void setReaderPath(Path path) {
+    readerPath = path;
   }
 
   /**
@@ -54,10 +77,6 @@ public class Settings {
 
   public static void setLanguage(String language) {
     userPreferences.put("language", language);
-  }
-
-  public static Path getPathHomeReader() {
-    return homeReader;
   }
 
   /**
