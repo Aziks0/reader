@@ -17,7 +17,7 @@ abstract class Controller {
   protected void changeScene(Stage stage, String resourcePath) throws IOException {
     ResourceBundle bundle = I18n.getBundle();
     FXMLLoader fxmlLoader =
-        new FXMLLoader(getClass().getResource("/com/aziks/reader" + resourcePath));
+        new FXMLLoader(getClass().getResource("/com/aziks/reader" + resourcePath), bundle);
     Scene scene = new Scene((fxmlLoader.load()));
 
     if (Settings.getKeepWindowSize()) {
