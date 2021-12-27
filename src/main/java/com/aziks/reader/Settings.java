@@ -1,11 +1,15 @@
 package com.aziks.reader;
 
+import com.aziks.reader.utils.DirectoryNotCreatedException;
+import com.aziks.reader.utils.ExceptionHandler;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
+// TODO: put settings in hashmap/map on init
 public class Settings {
   private static final String[] availableLanguages = {"EN", "FR"};
   private static final Preferences userPreferences = Preferences.userNodeForPackage(Settings.class);
@@ -26,6 +30,17 @@ public class Settings {
       // Else, use english as default
       if (getLanguage() == null) userPreferences.put("language", "EN");
     }
+
+    homeReader = Paths.get(System.getProperty("user.home"), ".reader");
+    if (Files.notExists(homeReader)) {
+      try {
+        if (!homeReader.toFile().mkdir()) throw new DirectoryNotCreatedException();
+      } catch (DirectoryNotCreatedException e) {
+        e.printStackTrace();
+        ExceptionHandler.alertUser(I18n.getMessage("exception.directoryNotCreated"));
+        System.exit(1);
+      }
+    }
   }
 
   /**
@@ -39,6 +54,10 @@ public class Settings {
 
   public static void setLanguage(String language) {
     userPreferences.put("language", language);
+  }
+
+  public static Path getPathHomeReader() {
+    return homeReader;
   }
 
   /**
@@ -80,5 +99,13 @@ public class Settings {
 
   public static void setWindowMaximized(boolean fullscreen) {
     userPreferences.putBoolean("windowMaximized", fullscreen);
+  }
+
+  public static boolean getUpdateOnStartup() {
+    return userPreferences.getBoolean("updateOnStartup", true);
+  }
+
+  public static void setUpdateOnStartup(boolean updateOnStartup) {
+    userPreferences.putBoolean("updateOnStartup", updateOnStartup);
   }
 }
