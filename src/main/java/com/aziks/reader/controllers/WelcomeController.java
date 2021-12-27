@@ -24,7 +24,7 @@ public class WelcomeController extends Controller {
     if (directory == null) return;
 
     // Show an error if the directory is not empty
-    if (directory.list() != null) {
+    if (directory.list().length != 0) {
       Alert alert =
           new Alert(Alert.AlertType.ERROR, I18n.getMessage("welcome.alertDirectoryNotEmpty"));
       alert.showAndWait();
