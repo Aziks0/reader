@@ -28,6 +28,13 @@ public class Database {
     statement.close();
   }
 
+  public void close() throws SQLException {
+    if (this.connection == null) return;
+
+    this.connection.close();
+    this.connection = null;
+  }
+
   public Connection getConnection() {
     return this.connection;
   }

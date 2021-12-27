@@ -49,6 +49,10 @@ public class Library {
     database.executeUpdate(sqlInit);
   }
 
+  public void closeDatabase() throws SQLException {
+    database.close();
+  }
+
   public Path getPath() {
     return this._path;
   }

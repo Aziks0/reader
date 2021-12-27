@@ -71,6 +71,8 @@ public class Main extends Application {
 
   @Override
   public void stop() throws Exception {
+    library.closeDatabase();
+
     if (Settings.getKeepWindowSize()) {
       Settings.setWindowWidth(app.getWidth());
       Settings.setWindowHeight(app.getHeight());
