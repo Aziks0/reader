@@ -40,12 +40,27 @@ public class Library {
     if (!booksFile.mkdir()) throw new DirectoryNotCreatedException();
 
     // Create library database
+    database.connectToDatabase(path);
+
     String sqlInit =
+        "CREATE TABLE IF NOT EXISTS shelves ("
+            + "path VARCHAR(400) PRIMARY KEY,"
+            + "name VARCHAR(100) NOT NULL"
+            + ")";
+    database.executeUpdate(sqlInit);
+
+    sqlInit = "INSERT INTO shelves (path, name) VALUES ('root', 'root')";
+    database.executeUpdate(sqlInit);
+
+    sqlInit =
         "CREATE TABLE IF NOT EXISTS books ("
             + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + "title VARCHAR(255) NOT NULL"
+            + "shelfpath VARCHAR(400) DEFAULT 'root' REFERENCES shelves(path) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+            + "gutid INTEGER NOT NULL,"
+            + "title VARCHAR(255) NOT NULL,"
+            + "language VARCHAR(30),"
+            + "read INTEGER DEFAULT 0"
             + ")";
-    database.connectToDatabase(path);
     database.executeUpdate(sqlInit);
   }
 
