@@ -1,5 +1,6 @@
 package com.aziks.reader;
 
+import com.aziks.reader.Library.Book;
 import com.aziks.reader.utils.EndOfFileReachedException;
 import com.aziks.reader.utils.HttpRequestUnsuccessful;
 import com.aziks.reader.utils.LineNotFoundException;
@@ -64,7 +65,7 @@ public class GutScraper {
       if (book == null) continue;
 
       String lowerQuery = query.toLowerCase();
-      String lowerBookTitle = book.title.toLowerCase();
+      String lowerBookTitle = book.title().toLowerCase();
       if (lowerBookTitle.contains(lowerQuery)) books.add(book);
     }
 
@@ -221,6 +222,4 @@ public class GutScraper {
 
     return new Book(id, title.toString(), language);
   }
-
-  public record Book(int id, String title, String language) {}
 }

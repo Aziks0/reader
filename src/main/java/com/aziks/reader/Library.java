@@ -60,4 +60,6 @@ public class Library {
   public void setPath(Path path) {
     this._path = path;
   }
+
+  public record Book(int id, String title, String language) {}
 }
