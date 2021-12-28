@@ -4,7 +4,10 @@ import com.aziks.reader.utils.DirectoryNotCreatedException;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,6 +65,59 @@ public class Library {
             + "read INTEGER DEFAULT 0"
             + ")";
     database.executeUpdate(sqlInit);
+  }
+
+  public List<Shelf> getShelves() throws SQLException {
+    String sqlQuery = "SELECT * FROM shelves ORDER BY path";
+    ResultSet resultSet = database.executeQuery(sqlQuery);
+
+    resultSet.next(); // Skip root row
+    if (!resultSet.next())
+      return null; // Empty result set (there is only the root shelf in the table)
+
+    List<Shelf> shelves = new ArrayList<>();
+    Shelf shelf;
+    do {
+      shelf = new Shelf(resultSet.getString(2), resultSet.getString(1));
+      shelves.add(shelf);
+    } while (resultSet.next());
+
+    resultSet.close();
+    return shelves;
+  }
+
+  public List<Book> getBooksFromShelfPath(String shelfPath) throws SQLException {
+    String sqlQuery = "SELECT * FROM books WHERE shelfpath = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlQuery);
+    statement.setString(1, shelfPath);
+    ResultSet resultSet = statement.executeQuery();
+
+    if (!resultSet.next()) return null; // Empty result set
+
+    List<Book> books = new ArrayList<>();
+    Book book;
+    do {
+      book = new Book(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+      books.add(book);
+    } while (resultSet.next());
+
+    resultSet.close();
+    ;
+    return books;
+  }
+
+  public void updateShelf(String name, String newPath, String oldPath) throws SQLException {
+    String sqlUpdate = "UPDATE shelves SET name = ?, path = ? WHERE path = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, name);
+    statement.setString(2, newPath);
+    statement.setString(3, oldPath);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void connectToDatabase() throws SQLException {
+    database.connectToDatabase(this._path);
   }
 
   public void closeDatabase() throws SQLException {
