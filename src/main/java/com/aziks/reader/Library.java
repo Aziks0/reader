@@ -62,4 +62,6 @@ public class Library {
   }
 
   public record Book(int id, String title, String language) {}
+
+  public record Shelf(String name, String path) {}
 }
