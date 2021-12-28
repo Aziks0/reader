@@ -1,10 +1,7 @@
 package com.aziks.reader;
 
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Database {
   private final String databaseFileName;
@@ -22,9 +19,9 @@ public class Database {
     this.connection = DriverManager.getConnection("jdbc:sqlite:" + path.resolve(databaseFileName));
   }
 
-  public void executeUpdate(String sql) throws SQLException {
+  public void executeUpdate(String update) throws SQLException {
     Statement statement = this.connection.createStatement();
-    statement.executeUpdate(sql);
+    statement.executeUpdate(update);
     statement.close();
   }
 
