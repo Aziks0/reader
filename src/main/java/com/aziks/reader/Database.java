@@ -25,6 +25,11 @@ public class Database {
     statement.close();
   }
 
+  public ResultSet executeQuery(String query) throws SQLException {
+    Statement statement = this.connection.createStatement();
+    return statement.executeQuery(query);
+  }
+
   public void close() throws SQLException {
     if (this.connection == null) return;
 
