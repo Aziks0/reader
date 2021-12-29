@@ -66,6 +66,26 @@ public class Library {
     database.executeUpdate(sqlInit);
   }
 
+  public boolean isShelfInDatabase(String path) throws SQLException {
+    String sqlQuery = "SELECT * FROM shelves WHERE path = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlQuery);
+    statement.setString(1, path);
+    ResultSet resultSet = statement.executeQuery();
+
+    boolean isShelfInDB = resultSet.next();
+    statement.close();
+    return isShelfInDB;
+  }
+
+  public void insertShelf(String name, String path) throws SQLException {
+    String sqlUpdate = "INSERT INTO shelves (path, name) VALUES (?, ?)";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, path);
+    statement.setString(2, name);
+    statement.executeUpdate();
+    statement.close();
+  }
+
   public List<Shelf> getShelves() throws SQLException {
     String sqlQuery = "SELECT * FROM shelves ORDER BY path";
     ResultSet resultSet = database.executeQuery(sqlQuery);
@@ -116,6 +136,26 @@ public class Library {
     statement.setString(1, name);
     statement.setString(2, newPath);
     statement.setString(3, oldPath);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void deleteShelf(String path) throws SQLException {
+    String childrenPath = path + "%";
+    String sqlUpdate = "DELETE FROM shelves WHERE path = ? OR path LIKE ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, path);
+    statement.setString(2, childrenPath);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void deleteBooksFromShelfPath(String shelfPath) throws SQLException {
+    String childrenShelfPath = shelfPath + "%";
+    String sqlUpdate = "DELETE FROM books WHERE shelfpath = ? OR shelfpath LIKE ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, shelfPath);
+    statement.setString(2, childrenShelfPath);
     statement.executeUpdate();
     statement.close();
   }
