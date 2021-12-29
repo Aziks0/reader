@@ -105,8 +105,8 @@ public class Library {
       books.add(book);
     } while (resultSet.next());
 
-    resultSet.close();
-    ;
+    statement.close();
+
     return books;
   }
 
