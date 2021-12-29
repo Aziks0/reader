@@ -57,9 +57,8 @@ public class Library {
 
     sqlInit =
         "CREATE TABLE IF NOT EXISTS books ("
-            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "gutid INTEGER PRIMARY KEY,"
             + "shelfpath VARCHAR(400) DEFAULT 'root' REFERENCES shelves(path) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
-            + "gutid INTEGER NOT NULL,"
             + "title VARCHAR(255) NOT NULL,"
             + "language VARCHAR(30),"
             + "read INTEGER DEFAULT 0"
@@ -97,7 +96,12 @@ public class Library {
     List<Book> books = new ArrayList<>();
     Book book;
     do {
-      book = new Book(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+      book =
+          new Book(
+              resultSet.getInt("gutid"),
+              resultSet.getString("title"),
+              resultSet.getString("language"),
+              resultSet.getInt("read") == 1);
       books.add(book);
     } while (resultSet.next());
 
@@ -132,7 +136,7 @@ public class Library {
     this._path = path;
   }
 
-  public record Book(int id, String title, String language) {}
+  public record Book(int gutid, String title, String language, boolean read) {}
 
   public record Shelf(String name, String path) {}
 }
