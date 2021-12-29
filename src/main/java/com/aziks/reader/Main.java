@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class Main extends Application {
   public static Library library = new Library();
-  private static Stage app;
+  private static Stage primaryStage;
 
   public static void main(String[] args) {
     Settings.init();
@@ -44,9 +44,13 @@ public class Main extends Application {
     launch();
   }
 
+  public static Stage getPrimaryStage() {
+    return primaryStage;
+  }
+
   @Override
   public void start(Stage stage) throws IOException {
-    app = stage;
+    primaryStage = stage;
     // Get translations
     ResourceBundle bundle = I18n.getBundle();
 
@@ -78,9 +82,9 @@ public class Main extends Application {
     library.closeDatabase();
 
     if (Settings.getKeepWindowSize()) {
-      Settings.setWindowWidth(app.getWidth());
-      Settings.setWindowHeight(app.getHeight());
-      Settings.setWindowMaximized(app.isMaximized());
+      Settings.setWindowWidth(primaryStage.getWidth());
+      Settings.setWindowHeight(primaryStage.getHeight());
+      Settings.setWindowMaximized(primaryStage.isMaximized());
     }
 
     Path libraryPath = library.getPath();
