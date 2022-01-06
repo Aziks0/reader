@@ -133,4 +133,13 @@ public class Settings {
   public static void setUpdateOnStartup(boolean updateOnStartup) {
     userPreferences.putBoolean("updateOnStartup", updateOnStartup);
   }
+
+  public static int getMaxBooksToSearch() {
+    return userPreferences.getInt("maxBooksToSearch", 10);
+  }
+
+  public static void setMaxBooksToSearch(int maxBooksToSearch) {
+    userPreferences.putInt("maxBooksToSearch", maxBooksToSearch);
+  }
+
 }

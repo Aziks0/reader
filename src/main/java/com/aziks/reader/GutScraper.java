@@ -39,12 +39,15 @@ public class GutScraper {
   public List<Book> searchBooks(String query) throws IOException, EndOfFileReachedException {
     List<Book> books = new ArrayList<>();
     Scanner scanner = getGutIndexAllScanner();
+    int max = Settings.getMaxBooksToSearch();
 
     skipIntro(scanner); // Skip preamble
 
     Book book;
     String line;
     while (scanner.hasNext()) {
+      if (books.size() == max) break;
+
       line = scanner.nextLine();
 
       line = line.replaceAll("\u00A0", " "); // Replace non-spaces char by spaces
