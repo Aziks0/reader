@@ -142,4 +142,47 @@ public class Settings {
     userPreferences.putInt("maxBooksToSearch", maxBooksToSearch);
   }
 
+  public static int getFontSize() {
+    return userPreferences.getInt("fontSize", 14);
+  }
+
+  public static void setFontSize(int fontSize) {
+    userPreferences.putInt("fontSize", fontSize);
+  }
+
+  public static String[] getAvailableLanguages() {
+    return availableLanguages;
+  }
+
+  public static String getBookTextColor() {
+    return userPreferences.get("bookTextColor", "#000000");
+  }
+
+  public static void setBookTextColor(String textColor) {
+    userPreferences.put("bookTextColor", textColor);
+  }
+
+  public static String getBookBackgroundColor() {
+    return userPreferences.get("bookBackgroundColor", "#ffffff");
+  }
+
+  public static void setBookBackgroundColor(String bookBackgroundColor) {
+    userPreferences.put("bookBackgroundColor", bookBackgroundColor);
+  }
+
+  public static String getNoteColor() {
+    return userPreferences.get("noteColor", "#ffff00");
+  }
+
+  public static void setNoteColor(String noteColor) {
+    userPreferences.put("noteColor", noteColor);
+  }
+
+  public static String getSelectedNoteColor() {
+    return userPreferences.get("selectedNoteColor", "#ff0000");
+  }
+
+  public static void setSelectedNoteColor(String selectedNoteColor) {
+    userPreferences.put("selectedNoteColor", selectedNoteColor);
+  }
 }
