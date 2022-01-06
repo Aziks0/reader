@@ -1,7 +1,9 @@
 module com.aziks.reader {
+  requires org.kordamp.ikonli.javafx;
+  requires org.kordamp.ikonli.core;
+  requires org.kordamp.ikonli.feather;
   requires javafx.controls;
   requires javafx.fxml;
-  requires org.kordamp.ikonli.javafx;
   requires java.prefs;
   requires java.sql;
   requires java.net.http;
