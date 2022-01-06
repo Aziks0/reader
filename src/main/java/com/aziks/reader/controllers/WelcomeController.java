@@ -3,6 +3,8 @@ package com.aziks.reader.controllers;
 import com.aziks.reader.I18n;
 import com.aziks.reader.Library;
 import com.aziks.reader.MainApp;
+import com.aziks.reader.components.PopupAbout;
+import com.aziks.reader.components.PopupSettings;
 import com.aziks.reader.utils.DirectoryNotCreatedException;
 import com.aziks.reader.utils.ExceptionHandler;
 import javafx.event.ActionEvent;
@@ -58,5 +60,19 @@ public class WelcomeController extends Controller {
 
     library.setPath(directory.toPath());
     changeScene(MainApp.getPrimaryStage(), "/scenes/Root.fxml");
+  }
+
+  public void handleCloseButtonAction(ActionEvent actionEvent) {
+    MainApp.getPrimaryStage().close();
+  }
+
+  public void handleSettingsButtonAction(ActionEvent actionEvent) {
+    PopupSettings popupSettings = new PopupSettings();
+    popupSettings.show(MainApp.getPrimaryStage());
+  }
+
+  public void handleAboutButtonAction(ActionEvent actionEvent) {
+    PopupAbout popupAbout = new PopupAbout();
+    popupAbout.show(MainApp.getPrimaryStage());
   }
 }
