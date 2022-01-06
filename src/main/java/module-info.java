@@ -4,6 +4,7 @@ module com.aziks.reader {
   requires org.kordamp.ikonli.feather;
   requires javafx.controls;
   requires javafx.fxml;
+  requires javafx.web;
   requires java.prefs;
   requires java.sql;
   requires java.net.http;
