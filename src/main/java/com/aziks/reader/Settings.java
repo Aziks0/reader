@@ -98,6 +98,10 @@ public class Settings {
     return userPreferences.getBoolean("keepWindowSize", false);
   }
 
+  public static void setKeepWindowSize(boolean keepWindowSize) {
+    userPreferences.putBoolean("keepWindowSize", keepWindowSize);
+  }
+
   public static double getWindowWidth() {
     return userPreferences.getDouble("windowWidth", 1000);
   }
