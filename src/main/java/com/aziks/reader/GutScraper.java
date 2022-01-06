@@ -220,6 +220,6 @@ public class GutScraper {
 
     if (!scanner.hasNext()) throw new EndOfFileReachedException();
 
-    return new Book(id, title.toString(), language);
+    return new Book(id, title.toString(), language, false);
   }
 }
