@@ -5,8 +5,12 @@ import com.aziks.reader.utils.EndOfFileReachedException;
 import com.aziks.reader.utils.HttpRequestUnsuccessful;
 import com.aziks.reader.utils.LineNotFoundException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ public class GutScraper {
   public GutScraper() {
     this.fetcher = new Fetcher();
     this.gutIndexAllUrl = "https://www.gutenberg.org/dirs/GUTINDEX.ALL";
+
     this.pathToGutIndexAll = Path.of(Settings.getReaderPath().toString(), "GUTINDEX.ALL.txt");
   }
 
@@ -83,9 +88,33 @@ public class GutScraper {
     return !localDate.equals(upstreamDate);
   }
 
-  private Scanner getGutIndexAllScanner() throws FileNotFoundException {
+  public String downloadBook(int gutid) throws IOException, HttpRequestUnsuccessful {
+    // There are 2 possible url for txt files. If the first one doesn't work, we need to try with
+    // the second one.
+    // Possible URLs:
+    // https://www.gutenberg.org/cache/epub/{GUTID}/pg{GUTID}.txt
+    // https://www.gutenberg.org/files/{GUTID}/{GUTID}-0.txt
+    String bookUrl = "https://www.gutenberg.org/cache/epub/" + gutid + "/pg" + gutid + ".txt";
+    URL url = new URL(bookUrl);
+
+    String bookText;
+    try {
+      bookText = this.fetcher.fetch(url); // Try with the first url
+    } catch (HttpRequestUnsuccessful e) {
+      e.printStackTrace();
+
+      // Try with the second url if the first one was unsuccessful
+      bookUrl = "https://www.gutenberg.org/files/" + gutid + "/" + gutid + "-0.txt";
+      url = new URL(bookUrl);
+      bookText = this.fetcher.fetch(url);
+    }
+
+    return bookText;
+  }
+
+  private Scanner getGutIndexAllScanner() throws IOException {
     File gutIndexAll = this.pathToGutIndexAll.toFile();
-    return new Scanner(gutIndexAll);
+    return new Scanner(gutIndexAll, StandardCharsets.UTF_8);
   }
 
   private String getUpstreamLastUpdateDate()
