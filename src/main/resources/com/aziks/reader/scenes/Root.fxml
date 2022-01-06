@@ -1,12 +1,235 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            maxHeight="1.7976931348623157E308"
+            maxWidth="1.7976931348623157E308" prefHeight="800.0"
             prefWidth="1000.0"
             xmlns="http://javafx.com/javafx/11.0.2"
             fx:controller="com.aziks.reader.controllers.RootController">
     <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="%header.file">
+                    <items>
+                        <MenuItem mnemonicParsing="false"
+                                  onAction="#handleCloseLibraryButtonAction"
+                                  text="%header.closeLibrary"/>
+                        <MenuItem mnemonicParsing="false"
+                                  onAction="#handleSettingsButtonAction"
+                                  text="%header.openSettings"/>
+                        <MenuItem mnemonicParsing="false"
+                                  onAction="#handleCloseButtonAction"
+                                  text="%header.close"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%header.help">
+                    <items>
+                        <MenuItem mnemonicParsing="false"
+                                  onAction="#handleAboutButtonAction"
+                                  text="%header.about"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
     </top>
+    <center>
+        <SplitPane dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0"
+                   BorderPane.alignment="CENTER">
+            <items>
+                <BorderPane fx:id="shelvesPane" prefHeight="200.0"
+                            prefWidth="200.0">
+                    <top>
+                        <VBox prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <ToolBar prefWidth="200.0">
+                                    <items>
+                                        <Button fx:id="addBookButton"
+                                                mnemonicParsing="false"
+                                                onAction="#handleAddBookAction">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-plus-square"/>
+                                            </graphic>
+                                            <tooltip>
+                                                <Tooltip showDelay="500ms"
+                                                         text="%root.addBooksButton.tooltip"/>
+                                            </tooltip>
+                                        </Button>
+                                        <Button fx:id="removeBookButton"
+                                                disable="true"
+                                                mnemonicParsing="false"
+                                                onAction="#handleRemoveBookButton">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-x-square"/>
+                                            </graphic>
+                                            <tooltip>
+                                                <Tooltip showDelay="500ms"
+                                                         text="%root.deleteBookButton.tooltip"/>
+                                            </tooltip>
+                                        </Button>
+                                        <Button fx:id="addShelfButton"
+                                                mnemonicParsing="false"
+                                                onAction="#handleAddShelfButtonAction">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-folder-plus"/>
+                                            </graphic>
+                                            <tooltip>
+                                                <Tooltip showDelay="500ms"
+                                                         text="%root.addShelfButton.tooltip"/>
+                                            </tooltip>
+                                        </Button>
+                                        <Button fx:id="removeShelfButton"
+                                                disable="true"
+                                                mnemonicParsing="false"
+                                                onAction="#handleRemoveShelfButtonAction">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-folder-minus"/>
+                                            </graphic>
+                                            <tooltip>
+                                                <Tooltip showDelay="500ms"
+                                                         text="%root.deleteShelfButton.tooltip"/>
+                                            </tooltip>
+                                        </Button>
+                                        <Button fx:id="markAsReadButton"
+                                                disable="true"
+                                                mnemonicParsing="false"
+                                                onAction="#handleMarkAsReadButtonAction">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-book-open"/>
+                                            </graphic>
+                                            <tooltip>
+                                                <Tooltip showDelay="500ms"
+                                                         text="%root.markBookAsReadButton.tooltip"/>
+                                            </tooltip>
+                                        </Button>
+                                    </items>
+                                </ToolBar>
+                                <HBox prefWidth="200.0">
+                                    <children>
+                                        <TextField
+                                                promptText="%root.searchLocalBookTextField"
+                                                HBox.hgrow="ALWAYS"/>
+                                        <Button mnemonicParsing="false">
+                                            <graphic>
+                                                <FontIcon
+                                                        iconLiteral="fth-search"/>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </top>
+                </BorderPane>
+                <BorderPane fx:id="bookPane">
+                    <top>
+                        <ToolBar prefWidth="200.0"
+                                 BorderPane.alignment="CENTER">
+                            <items>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleMakeSelectionBoldButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-bold"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.makeSelectionBold.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleMakeSelectionItalicButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-italic"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.makeSelectionItalic.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleMakeSelectionUnderlineButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-underline"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.makeSelectionUnderline.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleRemoveTagsSelectionButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-x-circle"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.removeSelectionTags.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleSaveFileButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-save"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.saveBookButton.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleAddNoteButtonAction"
+                                        text="%root.addNoteButton">
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.addNoteButton.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleShowNoteButtonAction"
+                                        text="%root.showNoteButton">
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.showNoteButton.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                                <Pane HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="settingsButton"
+                                        contentDisplay="CENTER"
+                                        mnemonicParsing="false"
+                                        onAction="#handleSettingsButtonAction">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fth-settings"/>
+                                    </graphic>
+                                    <tooltip>
+                                        <Tooltip showDelay="500ms"
+                                                 text="%root.settingsButton.tooltip"/>
+                                    </tooltip>
+                                </Button>
+                            </items>
+                        </ToolBar>
+                    </top>
+                    <center>
+                        <Label text="%root.noOpenBook"
+                               BorderPane.alignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="32.0"/>
+                            </font>
+                            <BorderPane.margin>
+                                <Insets bottom="25.0"/>
+                            </BorderPane.margin>
+                        </Label>
+                    </center>
+                </BorderPane>
+            </items>
+        </SplitPane>
+    </center>
 </BorderPane>
