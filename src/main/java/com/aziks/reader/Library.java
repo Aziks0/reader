@@ -1,8 +1,13 @@
 package com.aziks.reader;
 
+import com.aziks.reader.components.BookItem;
 import com.aziks.reader.utils.DirectoryNotCreatedException;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Library {
   private static final String booksDirectoryName = "books";
@@ -64,6 +70,85 @@ public class Library {
             + "read INTEGER DEFAULT 0"
             + ")";
     database.executeUpdate(sqlInit);
+  }
+
+  public void addBookFile(int gutid, String bookText) throws IOException {
+    Path bookPath = getBookPath(gutid);
+    Files.deleteIfExists(bookPath);
+    File bookFile = bookPath.toFile();
+
+    FileWriter fileWriter = new FileWriter(bookFile, StandardCharsets.UTF_8);
+    fileWriter.write(bookText);
+    fileWriter.close();
+  }
+
+  public void deleteBookFile(int gutid) throws IOException {
+    Path bookPath = getBookPath(gutid);
+    Files.delete(bookPath);
+  }
+
+  public String getBookFileText(int gutid) throws IOException {
+    File bookFile = getBookPath(gutid).toFile();
+    Scanner scanner = new Scanner(bookFile, StandardCharsets.UTF_8);
+
+    StringBuilder bookText = new StringBuilder();
+    while (scanner.hasNext()) {
+      bookText.append(scanner.nextLine());
+      bookText.append("\n");
+    }
+
+    scanner.close();
+    return bookText.toString();
+  }
+
+  public void insertBook(BookItem bookItem) throws SQLException {
+    String sqlUpdate =
+        "INSERT INTO books (shelfpath, gutid, title, language, read) VALUES (?, ?, ?, ?, ?)";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, bookItem.getShelfPath());
+    statement.setInt(2, bookItem.getGutId());
+    statement.setString(3, bookItem.getValue());
+    statement.setString(4, bookItem.getLanguage());
+    statement.setInt(5, 0);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void deleteBook(int gutid) throws SQLException {
+    String sqlUpdate = "DELETE FROM books WHERE gutid = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setInt(1, gutid);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void updateBookPath(int gutid, String shelfPath) throws SQLException {
+    String sqlUpdate = "UPDATE books SET shelfpath = ? WHERE gutid = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setString(1, shelfPath);
+    statement.setInt(2, gutid);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public void updateBookIsRead(int gutid, boolean isRead) throws SQLException {
+    String sqlUpdate = "UPDATE books SET read = ? WHERE gutid = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlUpdate);
+    statement.setInt(1, isRead ? 1 : 0);
+    statement.setInt(2, gutid);
+    statement.executeUpdate();
+    statement.close();
+  }
+
+  public boolean isBookInDatabase(int gutid) throws SQLException {
+    String sqlQuery = "SELECT * FROM books WHERE gutid = ?";
+    PreparedStatement statement = database.getConnection().prepareStatement(sqlQuery);
+    statement.setInt(1, gutid);
+    ResultSet resultSet = statement.executeQuery();
+
+    boolean isShelfInDB = resultSet.next();
+    statement.close();
+    return isShelfInDB;
   }
 
   public boolean isShelfInDatabase(String path) throws SQLException {
@@ -174,6 +259,10 @@ public class Library {
 
   public void setPath(Path path) {
     this._path = path;
+  }
+
+  private Path getBookPath(int gutid) {
+    return Path.of(_path.toString(), booksDirectoryName, Integer.toString(gutid) + ".txt");
   }
 
   public record Book(int gutid, String title, String language, boolean read) {}
